@@ -1,0 +1,3 @@
+# Sites that auto-rebuild when tax-constants change.
+# Schema: each consumer has org+repo+dispatch_event_type+workflow_file.
+consumers: []

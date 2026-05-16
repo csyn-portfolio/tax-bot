@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://csyn-portfolio.github.io/tax-bot/schema/tax-constants.schema.json",
+  "title": "Tax Constants",
+  "description": "Canonical annual tax constants for Cloud Syndicate passive sites.",
+  "type": "object",
+  "required": ["tax_year", "verified_date", "tax_brackets", "standard_deduction", "self_employment_tax"],
+  "properties": {
+    "$schema_version": {
+      "type": "string"
+    },
+    "tax_year": {
+      "type": "integer",
+      "minimum": 2024,
+      "maximum": 2099
+    },
+    "verified_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "verified_by": {
+      "type": "string"
+    },
+    "review_by": {
+      "type": "string",
+      "format": "date"
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "self_employment_tax": {
+      "type": "object",
+      "required": ["se_rate", "ss_rate", "medicare_rate", "se_income_factor", "ss_wage_base"],
+      "properties": {
+        "se_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "ss_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "medicare_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "se_income_factor": { "type": "number", "minimum": 0, "maximum": 1 },
+        "ss_wage_base": {
+          "type": "object",
+          "required": ["value"],
+          "properties": {
+            "value": { "type": "number", "minimum": 0 },
+            "source": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        },
+        "additional_medicare_surtax": {
+          "type": "object",
+          "required": ["rate", "thresholds"],
+          "properties": {
+            "rate": { "type": "number", "minimum": 0, "maximum": 1 },
+            "thresholds": {
+              "type": "object",
+              "patternProperties": {
+                "^(single|mfj|mfs|hoh)$": { "type": "number", "minimum": 0 }
+              }
+            },
+            "source": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    },
+    "standard_deduction": {
+      "type": "object",
+      "required": ["value"],
+      "properties": {
+        "value": {
+          "type": "object",
+          "patternProperties": {
+            "^(single|mfj|mfs|hoh)$": { "type": "number", "minimum": 0 }
+          }
+        },
+        "source": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "tax_brackets": {
+      "type": "object",
+      "required": ["single", "mfj", "mfs", "hoh"],
+      "properties": {
+        "source": { "type": "string" },
+        "secondary": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "patternProperties": {
+        "^(single|mfj|mfs|hoh)$": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["up_to", "rate"],
+            "properties": {
+              "up_to": {
+                "oneOf": [
+                  { "type": "number", "minimum": 0 },
+                  { "type": "null" }
+                ]
+              },
+              "rate": { "type": "number", "minimum": 0, "maximum": 1 }
+            }
+          }
+        }
+      }
+    },
+    "mileage_rate_business_per_mile": {
+      "type": "object",
+      "required": ["value"],
+      "properties": {
+        "value": { "type": "number", "minimum": 0 },
+        "effective_date": { "type": "string", "format": "date" },
+        "source": { "type": "string" },
+        "irs_notice": { "type": "string" },
+        "notes": { "type": "string" },
+        "review_by": { "type": "string", "format": "date" }
+      }
+    },
+    "qbi_section_199a": {
+      "type": "object",
+      "required": ["rate", "phase_in_threshold"],
+      "properties": {
+        "rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "phase_in_threshold": {
+          "type": "object",
+          "patternProperties": {
+            "^(single|mfj|mfs|hoh)$": { "type": "number", "minimum": 0 }
+          }
+        },
+        "full_phaseout_top": {
+          "type": "object",
+          "patternProperties": {
+            "^(single|mfj|mfs|hoh)$": { "type": "number", "minimum": 0 }
+          }
+        },
+        "phase_window_width": {
+          "type": "object",
+          "patternProperties": {
+            "^(single|mfj)$": { "type": "number", "minimum": 0 }
+          }
+        },
+        "minimum_deduction_floor": { "type": "number", "minimum": 0 },
+        "minimum_qbi_required_for_floor": { "type": "number", "minimum": 0 },
+        "source": { "type": "string" },
+        "secondary": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "home_office_simplified": {
+      "type": "object",
+      "required": ["rate_per_sqft", "max_sqft"],
+      "properties": {
+        "rate_per_sqft": { "type": "number", "minimum": 0 },
+        "max_sqft": { "type": "integer", "minimum": 0 },
+        "max_deduction": { "type": "number", "minimum": 0 },
+        "source": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "retirement_limits": {
+      "type": "object",
+      "properties": {
+        "solo_401k_employee_deferral": { "type": "number", "minimum": 0 },
+        "section_415c_total_cap": { "type": "number", "minimum": 0 },
+        "catch_up_age_50_plus": { "type": "number", "minimum": 0 },
+        "catch_up_ages_60_to_63": { "type": "number", "minimum": 0 },
+        "sep_ira_limit": { "type": "number", "minimum": 0 },
+        "compensation_cap": { "type": "number", "minimum": 0 },
+        "source": { "type": "string" },
+        "irs_notice": { "type": "string" }
+      }
+    },
+    "irs_underpayment_penalty_apr": {
+      "type": "object",
+      "required": ["value"],
+      "properties": {
+        "value": { "type": "number", "minimum": 0, "maximum": 1 },
+        "quarter": { "type": "string" },
+        "previous_quarter": { "type": "object" },
+        "source": { "type": "string" },
+        "notes": { "type": "string" },
+        "review_by": { "type": "string", "format": "date" }
+      }
+    },
+    "form_1099_k_threshold": {
+      "type": "object",
+      "required": ["amount", "transaction_count"],
+      "properties": {
+        "amount": { "type": "number", "minimum": 0 },
+        "transaction_count": { "type": "integer", "minimum": 0 },
+        "logic": { "type": "string", "enum": ["AND", "OR"] },
+        "tax_year_in_effect": { "type": "integer", "minimum": 2024 },
+        "source": { "type": "string" },
+        "secondary": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

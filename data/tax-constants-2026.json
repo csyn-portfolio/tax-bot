@@ -1,0 +1,137 @@
+{
+  "$schema_version": "1",
+  "tax_year": 2026,
+  "verified_date": "2026-05-15",
+  "verified_by": "Claude (research agent dispatch)",
+  "review_by": "2026-08-15",
+  "notes": [
+    "Reflects OBBBA (One Big Beautiful Bill Act, signed July 2025).",
+    "Several values differ from pre-OBBBA projections: standard deductions higher, QBI thresholds lower with wider phase-out, MFS bracket structure realigned, 1099-K threshold reverted.",
+    "Mileage rate is the IRS-published rate for the full year unless mid-year revised."
+  ],
+
+  "self_employment_tax": {
+    "se_rate": 0.153,
+    "ss_rate": 0.124,
+    "medicare_rate": 0.029,
+    "se_income_factor": 0.9235,
+    "ss_wage_base": {
+      "value": 184500,
+      "source": "https://www.ssa.gov/news/en/cola/factsheets/2026.html",
+      "notes": "SSA Fact Sheet 2026; up from $176,100 in 2025 (2.8% COLA)."
+    },
+    "additional_medicare_surtax": {
+      "rate": 0.009,
+      "thresholds": { "single": 200000, "mfj": 250000, "mfs": 125000, "hoh": 200000 },
+      "source": "https://www.irs.gov/taxtopics/tc560",
+      "notes": "Statutory, not inflation-adjusted; unchanged since 2013. OBBBA did not touch it."
+    }
+  },
+
+  "standard_deduction": {
+    "value": { "single": 16100, "mfj": 32200, "mfs": 16100, "hoh": 24150 },
+    "source": "https://www.irs.gov/newsroom/irs-releases-tax-inflation-adjustments-for-tax-year-2026-including-amendments-from-the-one-big-beautiful-bill",
+    "notes": "Includes OBBBA-driven bumps."
+  },
+
+  "tax_brackets": {
+    "source": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
+    "secondary": "https://taxfoundation.org/data/all/federal/2026-tax-brackets/",
+    "notes": "Rev. Proc. 2025-32. OBBBA realigned MFS to mirror Single through 35%; MFS 37% kicks in at $384,350 (no longer half of MFJ).",
+    "single": [
+      { "up_to": 12400,    "rate": 0.10 },
+      { "up_to": 50400,    "rate": 0.12 },
+      { "up_to": 105700,   "rate": 0.22 },
+      { "up_to": 201775,   "rate": 0.24 },
+      { "up_to": 256225,   "rate": 0.32 },
+      { "up_to": 640600,   "rate": 0.35 },
+      { "up_to": null,     "rate": 0.37 }
+    ],
+    "mfj": [
+      { "up_to": 24800,    "rate": 0.10 },
+      { "up_to": 100800,   "rate": 0.12 },
+      { "up_to": 211400,   "rate": 0.22 },
+      { "up_to": 403550,   "rate": 0.24 },
+      { "up_to": 512450,   "rate": 0.32 },
+      { "up_to": 768700,   "rate": 0.35 },
+      { "up_to": null,     "rate": 0.37 }
+    ],
+    "mfs": [
+      { "up_to": 12400,    "rate": 0.10 },
+      { "up_to": 50400,    "rate": 0.12 },
+      { "up_to": 105700,   "rate": 0.22 },
+      { "up_to": 201775,   "rate": 0.24 },
+      { "up_to": 256225,   "rate": 0.32 },
+      { "up_to": 384350,   "rate": 0.35 },
+      { "up_to": null,     "rate": 0.37 }
+    ],
+    "hoh": [
+      { "up_to": 17700,    "rate": 0.10 },
+      { "up_to": 67450,    "rate": 0.12 },
+      { "up_to": 105700,   "rate": 0.22 },
+      { "up_to": 201775,   "rate": 0.24 },
+      { "up_to": 256200,   "rate": 0.32 },
+      { "up_to": 640600,   "rate": 0.35 },
+      { "up_to": null,     "rate": 0.37 }
+    ]
+  },
+
+  "mileage_rate_business_per_mile": {
+    "value": 0.725,
+    "effective_date": "2026-01-01",
+    "source": "https://www.irs.gov/newsroom/irs-sets-2026-business-standard-mileage-rate-at-725-cents-per-mile-up-25-cents",
+    "irs_notice": "Notice 2026-10",
+    "notes": "Up 2.5 cents from $0.70 in 2025. IRS occasionally mid-year-revises; re-check on schedule.",
+    "review_by": "2026-08-15"
+  },
+
+  "qbi_section_199a": {
+    "rate": 0.20,
+    "phase_in_threshold": { "single": 201750, "mfj": 403500, "mfs": 201750, "hoh": 201750 },
+    "full_phaseout_top":  { "single": 276750, "mfj": 553500, "mfs": 276750, "hoh": 276750 },
+    "phase_window_width": { "single": 75000, "mfj": 150000 },
+    "minimum_deduction_floor": 400,
+    "minimum_qbi_required_for_floor": 1000,
+    "source": "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
+    "secondary": "https://www.foster.com/larry-s-tax-law/one-big-beautiful-bill-act-part-4-qualified-business-income-deduction-code-section-199a",
+    "notes": "OBBBA made 199A permanent (no sunset), lowered the threshold from prior projections, widened phase-out window to $75k single / $150k MFJ, and added a $400 minimum deduction floor when QBI ≥ $1,000 with material participation."
+  },
+
+  "home_office_simplified": {
+    "rate_per_sqft": 5,
+    "max_sqft": 300,
+    "max_deduction": 1500,
+    "source": "https://www.irs.gov/businesses/small-businesses-self-employed/simplified-option-for-home-office-deduction",
+    "notes": "Static since Rev. Proc. 2013-13."
+  },
+
+  "retirement_limits": {
+    "solo_401k_employee_deferral": 24500,
+    "section_415c_total_cap": 72000,
+    "catch_up_age_50_plus": 8000,
+    "catch_up_ages_60_to_63": 11250,
+    "sep_ira_limit": 72000,
+    "compensation_cap": 360000,
+    "source": "https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500",
+    "irs_notice": "Notice 2025-67"
+  },
+
+  "irs_underpayment_penalty_apr": {
+    "value": 0.06,
+    "quarter": "Q2 2026 (Apr 1 – Jun 30)",
+    "previous_quarter": { "Q1 2026": 0.07 },
+    "source": "https://www.irs.gov/payments/quarterly-interest-rates",
+    "notes": "Changes quarterly. Re-check at the start of each calendar quarter.",
+    "review_by": "2026-07-01"
+  },
+
+  "form_1099_k_threshold": {
+    "amount": 20000,
+    "transaction_count": 200,
+    "logic": "AND",
+    "tax_year_in_effect": 2026,
+    "source": "https://www.irs.gov/newsroom/form-1099-k-faqs",
+    "secondary": "https://www.avalara.com/blog/en/north-america/2025/07/one-big-beautiful-bill-act-1099-reporting-threshold.html",
+    "notes": "OBBBA permanently restored the original $20k / 200-transaction threshold. The phased rollback to $600 (originally planned 2024 → 2025 → 2026) is dead."
+  }
+}
